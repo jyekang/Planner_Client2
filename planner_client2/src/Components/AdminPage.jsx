@@ -1,24 +1,40 @@
 import { useContext, useState, useEffect } from "react"
-
+// import AxiosContext from "../AxiosContext";
 import axios from 'axios'
+import { useParams } from "react-router-dom"
 
-const AdminPage = () => {
+const AdminUpdate = ({id, event_name, date, time, budget, location, attendees, tasks, expenses}) => {
+    const {eventId} = useParams()
 
     const initialState = {
-        "id": null,
-        "event_name": "",
-        "date": "",
-        "time": "",
-        "budget": 0,
-        "location": "",
-        "attendees": "",
-        "tasks": "",
-        "expenses": "expenses"
+        "id": id,
+        "event_name": event_name,
+        "date": date,
+        "time": time,
+        "budget": budget,
+        "location": location,
+        "attendees": attendees,
+        "tasks": tasks,
+        "expenses": expenses
     }
 
     const [updateState, setUpdateState] = useState(initialState);
     const [editMode, setEditMode] = useState(false);
-    
+    // const { setAxiosAction } = useContext(AxiosContext)
+
+    useEffect(() => {
+        const getEvent = async () => {
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/events/${eventId}`)
+                setUpdateState(response.data)
+                console.log(response.data)
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        getEvent()
+    }, [eventId])
+    console.log(eventId)
 
     const handleChange = (e) => {
         setUpdateState({...updateState, [e.target.id]: e.target.value})
@@ -30,12 +46,9 @@ const AdminPage = () => {
         console.log(id)
         console.log(updateState)
         try {
-            if (updateState.id) {
-                await axios.put(`http://127.0.0.1:8000/events/${updateState.id}`, updateState);
-              } else {
-                
-                await axios.post(`http://127.0.0.1:8000/events/`, updateState);
-              }
+            await axios.put(`http://127.0.0.1:8000/events/${id}`, updateState)
+
+            console.log(updateState.field)
 
             setEditMode(false)
             setAxiosAction(true)
@@ -93,4 +106,4 @@ const AdminPage = () => {
 }
 
 
-export default AdminPage
+export default AdminUpdate
