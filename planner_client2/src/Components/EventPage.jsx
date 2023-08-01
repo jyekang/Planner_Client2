@@ -130,7 +130,7 @@ const EventPage = ({ event }) => {
     }
 
     const handleUpdate = async (id) => {
-        console.log(event.id)
+        console.log(id)
         console.log(updateState)
         try {
             await axios.put(`http://127.0.0.1:8000/events/${event.id}`, updateState)
@@ -157,7 +157,6 @@ const EventPage = ({ event }) => {
 
     return (
         <>
-        {editMode ? (
             <div className="edit-div">
                     <label>Event Name: </label>
                     <input type="text" id="event_name" onChange={handleChange} value={updateState.event_name}/>
@@ -172,26 +171,22 @@ const EventPage = ({ event }) => {
                     <input type="number" id="budget" onChange={handleChange} value={updateState.budget}/>
 
                     <label>Location: </label>
-                    <input type="text" id="city" onChange={handleChange} value={updateState.location}/>
+                    <input type="text" id="location" onChange={handleChange} value={updateState.location}/>
                 
-                    <label>Attendees: </label>
+                    {/* <label>Attendees: </label>
                     <input type="text" id="attendees" onChange={handleChange} value={updateState.attendees}/>
                 
                     <label>Tasks: </label>
                     <input type="text" id="tasks" onChange={handleChange} value={updateState.tasks}/>
 
                     <label>Expenses: </label>
-                    <textarea id="expenses" onChange={handleChange} value={updateState.expenses}/>
+                    <textarea id="expenses" onChange={handleChange} value={updateState.expenses}/> */}
                
                     <button className="update-button" onClick={handleUpdate}>Update</button>
                     <button onClick={handleClose}>Close</button>
         
             </div>
-        ) : (
-            <button className="admin-edit-button" onClick={() => setEditMode(true)}>
-          Edit
-        </button>
-      )}
+           
         </>
        
     )
