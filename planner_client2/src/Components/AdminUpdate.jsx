@@ -80,7 +80,7 @@ const AdminUpdate = ({id, event_name, date, time, budget, location, attendees, t
                     <textarea id="expenses" onChange={handleChange} value={updateState.expenses}/>
                
                     <button className="update-button" onClick={handleUpdate}>Update</button>
-                    <button onClick={handleClose}>Close</button>
+                    <button onClick={handleClose}>CLOSE</button>
         
             </div>
            
