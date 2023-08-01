@@ -16,7 +16,7 @@ const AdminEventCreate = () => {
 
     const initialState = {
         "id": null,
-        "name": '',
+        "event_name": '',
         "date": '',
         "time": '',
         "budget": 0,
@@ -51,7 +51,7 @@ const AdminEventCreate = () => {
                 <div>Add An Event</div>
                 
                 <div>Name:</div>
-                <input type="text" id="name" onChange={handleChange} value={formState.event_name}/>
+                <input type="text" id="event_name" onChange={handleChange} value={formState.event_name}/>
                 <div>Date:</div>
                 <input type="date" id="date" onChange={handleChange} value={formState.date}/>
                 <div>Time:</div>
@@ -61,7 +61,7 @@ const AdminEventCreate = () => {
                 <div>Location:</div>
                 <input type="text" id="location" onChange={handleChange} value={formState.location}/>
                 <div>Attendee:</div>
-                <input type="text" id="attendee" onChange={handleChange} value={formState.attendees}/>
+                <input type="text" id="attendees" onChange={handleChange} value={formState.attendees}/>
                 <div>Tasks:</div>
                 <input type="url" id="tasks" onChange={handleChange} value={formState.tasks}/>
                 <div>Expenses:</div>

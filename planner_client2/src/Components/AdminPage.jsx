@@ -1,109 +1,76 @@
 import { useContext, useState, useEffect } from "react"
-// import AxiosContext from "../AxiosContext";
 import axios from 'axios'
-import { useParams } from "react-router-dom"
 
-const AdminUpdate = ({id, event_name, date, time, budget, location, attendees, tasks, expenses}) => {
-    const {eventId} = useParams()
+const AdminPage = () => {
 
-    const initialState = {
-        "id": id,
-        "event_name": event_name,
-        "date": date,
-        "time": time,
-        "budget": budget,
-        "location": location,
-        "attendees": attendees,
-        "tasks": tasks,
-        "expenses": expenses
-    }
-
-    const [updateState, setUpdateState] = useState(initialState);
-    const [editMode, setEditMode] = useState(false);
-    // const { setAxiosAction } = useContext(AxiosContext)
+    const [events, setEvents] = useState();
 
     useEffect(() => {
-        const getEvent = async () => {
-            try {
-                const response = await axios.get(`http://127.0.0.1:8000/events/${eventId}`)
-                setUpdateState(response.data)
-                console.log(response.data)
-            } catch (e) {
-                console.log(e)
-            }
+        const getEvents = async () => {
+            const response = await axios.get(`http://127.0.0.1:8000/events`)
+            setEvents(response.data)
         }
-        getEvent()
-    }, [eventId])
-    console.log(eventId)
+        getEvents()
+    },[])
+
+    const initialState = {
+        "id": null,
+        "event_name": '',
+        "date": '',
+        "time": '',
+        "budget": 0,
+        "location": '',
+        "attendees": '',
+        "tasks": '',
+        "expenses": '',
+    }
+
+   
+    const [formState, setFormState] = useState(initialState)
 
     const handleChange = (e) => {
-        setUpdateState({...updateState, [e.target.id]: e.target.value})
-        console.log(e.target.value)
-        console.log(e.target.id)
+        setFormState({ ...formState, [e.target.id]: e.target.value });
     }
 
-    const handleUpdate = async () => {
-        console.log(id)
-        console.log(updateState)
-        try {
-            await axios.put(`http://127.0.0.1:8000/events/${id}`, updateState)
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(formState);
 
-            console.log(updateState.field)
+        await axios.post(`http://127.0.0.1:8000/events`, formState);
 
-            setEditMode(false)
-            setAxiosAction(true)
+        setFormState(initialState);
+        setAxiosAction(true)
+    };
 
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const handleClose = () => {
-        setEditMode(false)
-        setUpdateState(initialState)
-    }
-
-
-    if (!editMode) {
-        return <button className='admin-edit-button' onClick={() => setEditMode(true)}>Edit</button>
-    }
+    if (!events) { return <div className='admin-create'>Loading...</div> }
 
     return (
-        <>
-            <div className="edit-div">
-                    <label>Event Name: </label>
-                    <input type="text" id="event_name" onChange={handleChange} value={updateState.event_name}/>
+        <div className="admin-create">
+            <form onSubmit={handleSubmit}>
+                <div>Add An Event</div>
                 
-                    <label>Date: </label>
-                    <input type="date" id="date" onChange={handleChange} value={updateState.date}/>
-                
-                    <label>Time: </label>
-                    <input type="time" id="time" onChange={handleChange} value={updateState.time}/>
-        
-                    <label>Budget: </label>
-                    <input type="number" id="budget" onChange={handleChange} value={updateState.budget}/>
-
-                    <label>Location: </label>
-                    <input type="text" id="location" onChange={handleChange} value={updateState.location}/>
-                
-                    <label>Attendees: </label>
-                    <input type="text" id="attendees" onChange={handleChange} value={updateState.attendees}/>
-                
-                    <label>Tasks: </label>
-                    <input type="text" id="tasks" onChange={handleChange} value={updateState.tasks}/>
-
-                    <label>Expenses: </label>
-                    <textarea id="expenses" onChange={handleChange} value={updateState.expenses}/>
-               
-                    <button className="update-button" onClick={handleUpdate}>Update</button>
-                    <button onClick={handleClose}>Close</button>
-        
-            </div>
-           
-        </>
-       
+                <div>Name:</div>
+                <input type="text" id="event_name" onChange={handleChange} value={formState.event_name}/>
+                <div>Date:</div>
+                <input type="date" id="date" onChange={handleChange} value={formState.date}/>
+                <div>Time:</div>
+                <input type="time" id="time" onChange={handleChange} value={formState.time}/>
+                <div>Budget:</div>
+                <input type="number" id="budget" onChange={handleChange} value={formState.budget}/>
+                <div>Location:</div>
+                <input type="text" id="location" onChange={handleChange} value={formState.location}/>
+                {/* <div>Attendee:</div>
+                <input type="text" id="attendees" onChange={handleChange} value={formState.attendees}/>
+                <div>Tasks:</div>
+                <input type="url" id="tasks" onChange={handleChange} value={formState.tasks}/>
+                <div>Expenses:</div>
+                <input id="expenses" onChange={handleChange} value={formState.expenses}/> */}
+                <button className="event-submit" type="submit">
+                    Submit
+                </button>
+            </form>
+        </div>
     )
 }
 
-
-export default AdminUpdate
+export default AdminPage
