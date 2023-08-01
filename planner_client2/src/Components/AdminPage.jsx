@@ -36,10 +36,10 @@ const AdminPage = () => {
         e.preventDefault();
         console.log(formState);
 
-        await axios.post(`http://127.0.0.1:8000/events`, formState);
+        await axios.post(`http://127.0.0.1:8000/events/`, formState);
 
         setFormState(initialState);
-        setAxiosAction(true)
+     
     };
 
     if (!events) { return <div className='admin-create'>Loading...</div> }
